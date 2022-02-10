@@ -1,5 +1,6 @@
--- p. 5.2
--- Answer: S2
+-- ProbSet1
+-- 5.2
+
 SELECT 
 	store
     , SUM(sales) as total_sales
@@ -8,8 +9,10 @@ WHERE DAYOFWEEK(sale_date) = 1
 GROUP BY store
 ORDER BY SUM(sales) DESC;
 
--- p. 5.3
--- Answer: S8, S9, S10
+-- S2 makes the maximum sales on Sundays
+
+
+-- 5.3
 SELECT 
 	store
     , SUM(sales) AS total_sales
@@ -18,8 +21,10 @@ WHERE MONTH(sale_date) = 12
 GROUP BY store
 ORDER BY SUM(sales) ASC;
 
--- p. 5.4
--- Answer: S2
+-- S8, S9, S10 are the stores with total sales in Dec lower than those of S5.
+
+
+-- 5.4
 SELECT 
 	store
     , COUNT(DISTINCT sale_date) fr_top_sales
@@ -33,8 +38,10 @@ WHERE top_sale.rn = 1
 GROUP BY store
 ORDER BY COUNT(DISTINCT sale_date) DESC;
 
--- p. 5.5
--- Answer: 37th Week in 2019
+-- S2 recorded the highest number of sales for the largest number of days.
+
+
+-- 5.5
 SELECT 
 	WEEK(sale_date) sale_week -- this is out of 52
     , SUM(sales) AS total_sales_all_stores
@@ -43,7 +50,7 @@ WHERE YEAR(sale_date) = 2019
 GROUP BY 1 
 ORDER BY 2 DESC;
 
-
+-- 2019, 37th week has the highest total sales across all the stores. 
 
 
 
