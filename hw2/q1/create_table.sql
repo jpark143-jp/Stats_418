@@ -6,23 +6,23 @@
 CREATE DATABASE hw2;
 
 CREATE TABLE hw2.Movies (
-    [Movie title]      CHAR    PRIMARY KEY,
-    [Release year]     DATE CHECK([Release year] >= 1887 AND [Release year] < 2021),
-    [Plot description] CHAR,
+    Movie_title      CHAR    PRIMARY KEY,
+    Release_year     DATE CHECK(Release_year >= 1887 AND Release_year < 2021),
+    Plot_description CHAR,
     Genre            CHAR,
-    [Average Rating]   CHAR,
-    [Number of votes]  INTEGER
+    Average_Rating   CHAR,
+    Number_of_votes  INTEGER
 );
 
 
 CREATE TABLE Users (
     Users CHAR REFERENCES Users (Username),
-    Movies CHAR REFERENCES Movies (Movie title),
+    Movies CHAR REFERENCES Movies (Movie_title),
     Rating INTEGER PRIMARY KEY CHECK(Rating >= 1 AND Rating <= 10)
 );
 
 CREATE TABLE Users (
     Username   CHAR PRIMARY KEY,
-    [First name] CHAR,
-    [Last name]  CHAR
+    First_name CHAR,
+    Last_name  CHAR
 );
