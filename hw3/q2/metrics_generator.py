@@ -9,7 +9,7 @@ score_test= model.score(x_test,y_test)
 y_pred = model.predict(x_test)
 cv = cross_val_score(model, x_test, y_test).mean()
 auc_roc = roc_auc_score(y_test, y_pred)
-recall= metrics.recall_score(y_test, basemodel.predict(x_test))
+recall= metrics.recall_score(y_test, model.predict(x_test))
 
 
 cm =metrics.confusion_matrix(y_test, model.predict(x_test),labels=[0,1]) # Constructing Confusion Matrix
