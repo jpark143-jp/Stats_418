@@ -1,0 +1,186 @@
+
+   
+<!DOCTYPE html>
+<html lang="ko">
+
+    <head>
+        <!-- Webpage Title -->
+        <title>Book review | stat418</title>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+
+        <!-- google font -->
+        <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $("#reviews-box").html("");
+                showReview();
+            });
+
+            function makeReview() {
+                // 1. title, author, bookreview
+                let title = $("#title").val();
+                let author = $("#author").val();
+                let review = $("#bookReview").val();
+
+                // 2. alert.
+                if (title == "") {
+                    alert("insert title");
+                    $("#title").focus();
+                    return;
+                } else if (author == "") {
+                    alert("insert author");
+                    $("#author").focus();
+                    return;
+                } else if (review == "") {
+                    alert("insert reviews");
+                    $("#bookReview").focus();
+                    return;
+                }
+
+                // 3. POST /review 
+                $.ajax({
+                    type: "POST",
+                    url: "/review",
+                    data: {title_give: title, author_give: author, review_give: review},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            alert(response["msg"]);
+                            window.location.reload();
+                        }
+                    }
+                })
+            }
+
+            function showReview() {
+                // 1. server request for title
+                $.ajax({
+                    type: "GET",
+                    url: "/review",
+                    data: {},
+                    success: function (response) {
+                        // 2. request success
+                        if (response["result"] == "success") {
+                            let reviews = response["reviews"];
+                            // 3. print screen
+                            for (let i = 0; i < reviews.length; i++) {
+                                makeCard(reviews[i]["title"], reviews[i]["author"], reviews[i]["review"]);
+                            }
+                        } else {
+                            alert("could not recieve reviews");
+                        }
+                    }
+                })
+            }
+
+            function makeCard(title, author, review) {
+                let tempHtml = `<tr>
+                        <td>${title}</td>
+                        <td>${author}</td>
+                        <td>${review}</td>
+                    </tr>`;
+                $("#reviews-box").append(tempHtml);
+            }
+
+            function validateLength(obj) {
+                let content = $(obj).val();
+                if (content.length > 140) {
+                    alert("upto 140 words");
+                    $(obj).val(content.substring(0, content.length - 1));
+                }
+            }
+        </script>
+
+        <style type="text/css">
+            * {
+                font-family: "Do Hyeon", sans-serif;
+            }
+
+            h1,
+            h5 {
+                display: inline;
+            }
+
+            .info {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .review {
+                text-align: center;
+            }
+
+            .reviews {
+                margin-top: 100px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <img src="https://previews.123rf.com/images/maxxyustas/maxxyustas1511/maxxyustas151100002/47858355-education-concept-books-and-textbooks-on-the-bookshelf-3d.jpg"
+                 class="img-fluid" alt="Responsive image">
+            <div class="info">
+                <h1>tell me about the book.</h1>
+                <p>for others, make reviews</p>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">title</span>
+                    </div>
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">author</span>
+                    </div>
+                    <input type="text" class="form-control" id="author">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">reviews</span>
+                    </div>
+                    <textarea class="form-control" id="bookReview"
+                              cols="30"
+                              rows="5" placeholder="upto 140 wrods." onkeyup="validateLength(this)"></textarea>
+                </div>
+                <div class="review">
+                    <button onclick="makeReview()" type="button" class="btn btn-primary">type reviews</button>
+                </div>
+            </div>
+            <div class="reviews">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">title</th>
+                        <th scope="col">author</th>
+                        <th scope="col">reviews</th>
+                    </tr>
+                    </thead>
+                    <tbody id="reviews-box">
+                    <tr>
+                        <td>stat</td>
+                        <td>418</td>
+                        <td>Yes</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+
+</html>
